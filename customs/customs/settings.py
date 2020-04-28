@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'testapp.apps.TestappConfig',
     'django.contrib.admin',
     'django.contrib.auth',
-    'django.conDjangoTemplates trib.contenttypes',
+    'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
