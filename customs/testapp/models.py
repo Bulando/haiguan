@@ -75,8 +75,8 @@ class AuthUserUserPermissions(models.Model):
 
 
 # class Data0(models.Model):
-#     海关编号 = models.CharField(max_length=50, blank=True, null=True)
-#     商品序号 = models.CharField(max_length=50, blank=True, null=True)
+#     海关编号 = models.CharField(max_length=255, blank=True, null=True)
+#     商品序号 = models.CharField(max_length=255, blank=True, null=True)
 #     商品编号 = models.CharField(max_length=255, blank=True, null=True)
 #     商品名称 = models.CharField(max_length=255, blank=True, null=True)
 #     商品规格型号 = models.CharField(max_length=255, blank=True, null=True)
@@ -155,11 +155,49 @@ class Data2(models.Model):
     elements = models.CharField(max_length=255, blank=True, null=True)
     text_elements = models.TextField(blank=True, null=True)
     insert_time = models.DateTimeField(blank=True, null=True)
+    id = models.BigAutoField(primary_key=True)
 
     class Meta:
-        unique_together = ("customs_id", "product_number")
         managed = False
         db_table = 'data2'
+
+
+class Datax(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    customs_id = models.CharField(max_length=50, blank=True, null=True)
+    product_number = models.CharField(max_length=50, blank=True, null=True)
+    product_id = models.CharField(max_length=255, blank=True, null=True)
+    product_name = models.CharField(max_length=255, blank=True, null=True)
+    guige = models.CharField(max_length=255, blank=True, null=True)
+    diyi_jiliang = models.CharField(max_length=255, blank=True, null=True)
+    shenbao_date = models.CharField(max_length=255, blank=True, null=True)
+    shi_jia_guan = models.CharField(max_length=255, blank=True, null=True)
+    ying_jia_guan = models.CharField(max_length=255, blank=True, null=True)
+    jian_zhengjian = models.CharField(max_length=255, blank=True, null=True)
+    chanxiaoguo = models.CharField(max_length=255, blank=True, null=True)
+    jingying_code = models.CharField(max_length=255, blank=True, null=True)
+    jingying_name = models.CharField(max_length=255, blank=True, null=True)
+    huozhu_code = models.CharField(max_length=255, blank=True, null=True)
+    huozhu_name = models.CharField(max_length=255, blank=True, null=True)
+    shenbao_code = models.CharField(max_length=255, blank=True, null=True)
+    shenbao_name = models.CharField(max_length=255, blank=True, null=True)
+    jian_style = models.CharField(max_length=255, blank=True, null=True)
+    shi_liang_guan = models.CharField(max_length=255, blank=True, null=True)
+    ying_liang_guan = models.CharField(max_length=255, blank=True, null=True)
+    shi_jia_zeng = models.CharField(max_length=255, blank=True, null=True)
+    ying_jia_zeng = models.CharField(max_length=255, blank=True, null=True)
+    shi_jia_xiao = models.CharField(max_length=255, blank=True, null=True)
+    ying_jia_xiao = models.CharField(max_length=255, blank=True, null=True)
+    shi_liang_xiao = models.CharField(max_length=255, blank=True, null=True)
+    ying_liang_xiao = models.CharField(max_length=255, blank=True, null=True)
+    shi_jia_fan = models.CharField(max_length=255, blank=True, null=True)
+    ying_jia_fan = models.CharField(max_length=255, blank=True, null=True)
+    shui_jia = models.CharField(max_length=255, blank=True, null=True)
+    diyi_shuliang = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'datax'
 
 
 class DirectoryFactorRel(models.Model):
@@ -178,9 +216,6 @@ class DirectoryFactorRel(models.Model):
     class Meta:
         managed = False
         db_table = 'directory_factor_rel'
-
-    # def __str__(self):
-    #     return self.product_code + "," + self.element_code
 
 
 class DjangoAdminLog(models.Model):
@@ -258,30 +293,23 @@ class TDirectoryCode(models.Model):
     product_name = models.CharField(max_length=255, blank=True, null=True)
     enable_time = models.DateTimeField(blank=True, null=True)
     end_time = models.DateTimeField(blank=True, null=True)
-    whether_enable = models.BooleanField(db_column='Whether_enable', blank=True,
-                                         null=True)  # Field name made lowercase.
+    whether_enable = models.BooleanField(db_column='Whether_enable', blank=True, null=True)  # Field name made lowercase.
     note = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 't_directory_code'
 
-    def __str__(self):
-        return self.product_code
-
 
 class TFactorCode(models.Model):
     element_code = models.CharField(primary_key=True, max_length=50)
     element_name = models.CharField(max_length=255)
-    # element_uid = models.AutoField(unique=True)
+    # element_uid = models.AutoField()
     syno_code = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 't_factor_code'
-
-    def __str__(self):
-        return self.element_code
 
 
 class WmdThresholdValue(models.Model):
