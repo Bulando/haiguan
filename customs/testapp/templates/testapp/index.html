@@ -1,0 +1,21 @@
+{% if context %}
+    <table>
+
+             {% for val in context %}
+
+        <tr>
+
+<!--            <td>david</td>-->
+                    <td>{{ val.0.product_number }}</td>
+                    <td>{{ val.0.product_id }}</td>
+                    <td>{{ val.0.product_name }}</td>
+                    <td>{{ val.0.guige }}</td>
+                    <td>{{ val.0.shi_jia_guan }}</td>
+                    <td>{{  val.1 }}</td>
+        </tr>
+              {% endfor %}
+
+    </table>
+{% else %}
+    <p>字典无值.</p>
+{% endif %}

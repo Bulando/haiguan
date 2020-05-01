@@ -200,6 +200,10 @@ class Datax(models.Model):
         db_table = 'datax'
 
 
+class Dataxx(Datax):
+    tag_label = models.BooleanField(blank=True, null=True)
+
+
 class DirectoryFactorRel(models.Model):
     uid = models.BigAutoField(primary_key=True)
     product_code = models.ForeignKey('TDirectoryCode', models.DO_NOTHING, db_column='product_code')

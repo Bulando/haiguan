@@ -73,12 +73,14 @@ class QuerySets:
                     a = Datax.objects.get(customs_id=bs[0], product_number=bs[1])
                     label[main_lable].append(a)
                     # print(a.product_name)
+        # print(label)
         return label
 
     def tax_result(self, groups):
         new_result = list()
         for key, values in groups.items():
             old_key = key
+            tag_list = []
             end = 0  # 标准
             big_end = 0  # 最大
             small_end = 0  # 最小
@@ -89,7 +91,7 @@ class QuerySets:
             big_label = key  # 最大税号
             small_label = key  # 最小税号
             product_tags_nums = dict()
-            print('values======{}'.format(values))
+            # print('values======{}'.format(values))
             for t in values:
                 try:
                     label = t.product_id
@@ -101,7 +103,8 @@ class QuerySets:
                 except:
                     print(t)
                     sys.exit()
-            print('yessssssssssssssss{}'.format(product_tags_nums))
+            # print('yessssssssssssssss{}'.format(product_tags_nums))
+
             s_number = 0  # 标准
             sb_number = 0  # 最大
             ss_number = 0  # 最小
@@ -130,36 +133,44 @@ class QuerySets:
                     if value[1] > sb_gs:  # 最大
                         sb_gs = value[1]
                         big_label = k
-            standard_tag = s_gs
-            big_tag = sb_gs
-            small_tag = ss_gs
+
             for t in values:
-                label = t.product_id
-                tag = float(t.shi_jia_guan)
-                wsjg = float(t.shui_jia)
-                if label == standard_label:  # 标准
-                    standard_tag = float(t.shi_jia_guan)
-                    sc = 0
+                if t.shi_jia_guan != s_gs:
+                    tag_list.append(1)
                 else:
-                    sc = wsjg * (tag - standard_tag)
+                    tag_list.append(0)
 
-                if label == big_label:  # 最大
-                    big_tag = float(t.shi_jia_guan)
-                    bsc = 0
-                else:
-                    bsc = wsjg * (tag - big_tag)
-
-                if label == small_label:  # 最小
-                    small_tag = float(t.shi_jia_guan)
-                    ssc = 0
-                else:
-                    ssc = wsjg * (tag - small_tag)
-
-                end += sc
-                big_end += bsc
-                small_end += ssc
-
-            self.tag_result[old_key] = [end, big_end, small_end]
-        print('1111111111111111{}'.format(self.tag_result))
-
-
+            self.tag_result[old_key] = tag_list
+        return self.tag_result
+        # 下面是计算税差的部分
+        #     standard_tag = s_gs
+        #     big_tag = sb_gs
+        #     small_tag = ss_gs
+        #     for t in values:
+        #         label = t.product_id
+        #         tag = float(t.shi_jia_guan)
+        #         wsjg = float(t.shui_jia)
+        #         if label == standard_label:  # 标准
+        #             standard_tag = float(t.shi_jia_guan)
+        #             sc = 0
+        #         else:
+        #             sc = wsjg * (tag - standard_tag)
+        #
+        #         if label == big_label:  # 最大
+        #             big_tag = float(t.shi_jia_guan)
+        #             bsc = 0
+        #         else:
+        #             bsc = wsjg * (tag - big_tag)
+        #
+        #         if label == small_label:  # 最小
+        #             small_tag = float(t.shi_jia_guan)
+        #             ssc = 0
+        #         else:
+        #             ssc = wsjg * (tag - small_tag)
+        #
+        #         end += sc
+        #         big_end += bsc
+        #         small_end += ssc
+        #
+        #     self.tag_result[old_key] = [end, big_end, small_end]
+        # print('1111111111111111{}'.format(self.tag_result))
