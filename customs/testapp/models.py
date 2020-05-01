@@ -1,3 +1,4 @@
+# coding=gbk
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
@@ -164,11 +165,11 @@ class Data2(models.Model):
 
 class Datax(models.Model):
     id = models.BigAutoField(primary_key=True)
-    customs_id = models.CharField(max_length=50, blank=True, null=True)
-    product_number = models.CharField(max_length=50, blank=True, null=True)
-    product_id = models.CharField(max_length=255, blank=True, null=True)
-    product_name = models.CharField(max_length=255, blank=True, null=True)
-    guige = models.CharField(max_length=255, blank=True, null=True)
+    customs_id = models.CharField(max_length=50, blank=True, null=True, verbose_name="海关编号")
+    product_number = models.CharField(max_length=50, blank=True, null=True, verbose_name="商品序号")
+    product_id = models.CharField(max_length=255, blank=True, null=True, verbose_name="商品编号")
+    product_name = models.CharField(max_length=255, blank=True, null=True, verbose_name="商品名称")
+    guige = models.CharField(max_length=255, blank=True, null=True, verbose_name="规格型号")
     diyi_jiliang = models.CharField(max_length=255, blank=True, null=True)
     shenbao_date = models.CharField(max_length=255, blank=True, null=True)
     shi_jia_guan = models.CharField(max_length=255, blank=True, null=True)
@@ -194,6 +195,7 @@ class Datax(models.Model):
     ying_jia_fan = models.CharField(max_length=255, blank=True, null=True)
     shui_jia = models.CharField(max_length=255, blank=True, null=True)
     diyi_shuliang = models.CharField(max_length=255, blank=True, null=True)
+    tag = models.IntegerField(verbose_name="是否为风险税率")
 
     class Meta:
         managed = False
@@ -202,6 +204,9 @@ class Datax(models.Model):
 
 class Dataxx(Datax):
     tag_label = models.BooleanField(blank=True, null=True)
+
+    def name(self, tag):
+        self.tag_label = tag
 
 
 class DirectoryFactorRel(models.Model):
@@ -297,7 +302,8 @@ class TDirectoryCode(models.Model):
     product_name = models.CharField(max_length=255, blank=True, null=True)
     enable_time = models.DateTimeField(blank=True, null=True)
     end_time = models.DateTimeField(blank=True, null=True)
-    whether_enable = models.BooleanField(db_column='Whether_enable', blank=True, null=True)  # Field name made lowercase.
+    whether_enable = models.BooleanField(db_column='Whether_enable', blank=True,
+                                         null=True)  # Field name made lowercase.
     note = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:

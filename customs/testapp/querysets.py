@@ -93,9 +93,10 @@ class QuerySets:
             product_tags_nums = dict()
             # print('values======{}'.format(values))
             for t in values:
+                print("+++++++++++++{}".format(t.shi_jia_guan))
                 try:
                     label = t.product_id
-                    tag = float(t.shi_jia_guan)
+                    tag = t.shi_jia_guan
                     if label in product_tags_nums.keys():
                         product_tags_nums[label][0] += 1
                     else:
@@ -103,7 +104,7 @@ class QuerySets:
                 except:
                     print(t)
                     sys.exit()
-            # print('yessssssssssssssss{}'.format(product_tags_nums))
+            print('yessssssssssssssss{}'.format(product_tags_nums))
 
             s_number = 0  # 标准
             sb_number = 0  # 最大
@@ -135,6 +136,8 @@ class QuerySets:
                         big_label = k
 
             for t in values:
+                print("每条数据的税率值是：{}".format(t.shi_jia_guan))
+                print("标准税率值是{}".format(s_gs))
                 if t.shi_jia_guan != s_gs:
                     tag_list.append(1)
                 else:
