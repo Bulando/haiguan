@@ -7,7 +7,8 @@ from testapp.querysets import QuerySets
 from django.template import loader
 from django_tables2 import SingleTableView
 from .tables import DataxTable
-
+from django.views.generic.edit import BaseDetailView, UpdateView
+from django.http import Http404
 
 def index(request):
     result = dict()
@@ -63,3 +64,11 @@ class DataxListView(SingleTableView):
     table_class = DataxTable
     table_data = dict_groups
     template_name = 'testapp/test.html'
+
+
+def detail(request, year):
+    try:
+        question = Datax.objects.get(pk=year)
+    except question.DoesNotExist:
+        raise Http404("Question does not exist")
+    return render(request, 'testapp/detail.html', {'question': question})
