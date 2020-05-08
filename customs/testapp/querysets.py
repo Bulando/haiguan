@@ -10,6 +10,7 @@ class QuerySets:
         self.new_coding = []
         self.new_result = dict()
         self.tag_result = dict()
+        self.res = dict()
         return
 
     # @staticmethod
@@ -48,12 +49,12 @@ class QuerySets:
         for text, el in result.items():
             one_group = result[text]
             if len(one_group) > 1:
-                standard = 0
-                a += 1
-                for label, bscode in one_group.items():
-                    if len(bscode) > standard:
-                        standard_label = label
-                        standard = len(bscode)
+                # standard = 0
+                # a += 1
+                # for label, bscode in one_group.items():
+                #     if len(bscode) > standard:
+                #         standard_label = label
+                #         standard = len(bscode)
                 self.new_result[text] = el
         return self.new_result
 
@@ -62,19 +63,82 @@ class QuerySets:
             print("税号分组的编码字典为空！")
             return
         data = list()
-        label = dict()
         for main_lable, text in tqdm(self.new_result.items()):
-            label[main_lable] = []
+            self.res[main_lable] = []
             # print('我想看看text{}'.format(text))
             for shuihao, bsnumber in text.items():
                 # bsnumber = tuple(tuple(w) for w in bsnumber)
                 # print('bsnumber是多少{}'.format(bsnumber))
                 for bs in bsnumber:
                     a = Datax.objects.get(customs_id=bs[0], product_number=bs[1])
-                    label[main_lable].append(a)
+                    self.res[main_lable].append(a)
                     # print(a.product_name)
         # print(label)
-        return label
+        return self.res
+
+    def tax_algorithm(self):
+        alas = []
+        if not bool(self.res):
+            print("税号分组的编码字典为空！")
+            return
+        print("-----------{}".format(self.res))
+        for key, values in self.res.items():
+            product_tags_nums = dict()
+            for t in values:
+                try:
+                    label = t.product_id
+                    tag = t.shi_jia_guan
+                    if label not in product_tags_nums.keys():
+                        product_tags_nums[label] = dict()
+                    if tag not in product_tags_nums[label].keys():
+                        product_tags_nums[label][tag] = 1
+                    else:
+                        product_tags_nums[label][tag] += 1
+                    # if label in product_tags_nums.keys():
+                    #     if tag in product_tags_nums[label].keys():
+                    #         print("ooo")
+                    #         product_tags_nums[label][tag] += 1
+                    #     else:
+                    #         print("ppp")
+                    #         product_tags_nums[label][tag] = 1
+                    # else:
+                    #     print("qqq")
+                    #     product_tags_nums[label][tag] = 1
+                except:
+                    print(t)
+                    sys.exit()
+            print("000000000000{}".format(product_tags_nums))
+            for label, tags in product_tags_nums.items():
+                if len(tags) >= 3:
+                    num_tag = list(tags.keys())[list(tags.values()).index(max(tags.values()))]
+                    max_tag = max(tags.keys())
+                    min_tag = min(tags.keys())
+                    for t in tags.keys():
+                        # product_tags_nums[label][t] = []
+                        if t == num_tag:
+                            product_tags_nums[label][t] = 0
+                        elif t == max_tag:
+                            product_tags_nums[label][t] = 1
+                        elif t == min_tag:
+                            product_tags_nums[label][t] = 1
+                        else:
+                            product_tags_nums[label][t] = 0
+                elif len(tags) == 2:
+                    num_tag = list(tags.keys())[list(tags.values()).index(max(tags.values()))]
+                    for t in tags.keys():
+                        if t == num_tag:
+                            product_tags_nums[label][t] = 0
+                        else:
+                            product_tags_nums[label][t] = 1
+                else:
+                    for t in tags.keys():
+                        product_tags_nums[label][t] = 0
+            for v in values:
+                la = v.product_id
+                ta = v.shi_jia_guan
+                v.tag = product_tags_nums[la][ta]
+                alas.append(v)
+        return alas
 
     def tax_result(self, groups):
         new_result = list()
