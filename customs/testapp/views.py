@@ -12,6 +12,7 @@ from django.http import Http404
 from .forms import FileUploadForm
 import xlrd
 from testapp.excelHandler import ExcelRead
+from testapp.coreAlgrithm import coreTax
 
 def index(request):
     result = dict()
@@ -22,8 +23,6 @@ def index(request):
     y = dict()
     x = qs.change_original_dict()
     y = qs.tax_result(x)
-    # print("xxxxxxxxxxx{}".format(x))
-    # print("yyyyyyyyyyy{}".format(y))
     dict_groups = []
     for key, values in x.items():
         tags = y.get(key)
@@ -32,40 +31,17 @@ def index(request):
             break
         for i in range(len(values)):
             values[i].name = tags[i]
-            jiba = Dataxx.objects.get(id=values[i].id)
+            jiba = Datax.objects.get(id=values[i].id)
             jiba.name = tags[i]
             # jiba.save()
             dict_groups.append(values[i])
             # dict_groups.append([values[i]] + [tags[i]])
-
-    print("lalalalalalalalala{}".format(dict_groups))
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
     return render(request, 'testapp/index.html', {'context': dict_groups})
 
 
 class DataxListView(SingleTableView):
-    result = dict()
-    qs = QuerySets()
-    qs.handle_elements_list('0000', '0001')
-    result = qs.handle_dict()
-    x = dict()
-    y = dict()
-    x = qs.change_original_dict()
-    # y = qs.tax_result(x)
-    # print("yaaaaaaaaaaaa{}".format(y))
-    # dict_groups = []
-    # for key, values in x.items():
-    #     tags = y.get(key)
-    #     if len(tags) == 0 or len(tags) != len(values):
-    #         print("数据字典和标记字典不对应！")
-    #         break
-    #     for i in range(len(values)):
-    #         values[i].tag = tags[i]
-    #         print("taggg={}".format(values[i].tag))
-    #         dict_groups.append(values[i])
-
-    z = qs.tax_algorithm()
-    print("zzzzzzzzzzzzzz{}".format(z))
+    core = coreTax()
+    z = core.tax_algorithm()
     model = Datax
     table_class = DataxTable
     table_data = z
@@ -146,6 +122,5 @@ def upload(request):
 
 
     else:
-        print("get方法请求过来1111111111111111111111111")
         myform = FileUploadForm()
     return render(request, 'testapp/fileup.html', context={'form': myform, 'what': "文件传输"})

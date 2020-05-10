@@ -196,6 +196,7 @@ class Datax(models.Model):
     shui_jia = models.CharField(max_length=255, blank=True, null=True)
     diyi_shuliang = models.CharField(max_length=255, blank=True, null=True)
     tag = models.IntegerField(verbose_name="是否为风险税率")
+    tag_ins = models.CharField(max_length=255, blank=True, null=True, verbose_name="风险指示")
 
     class Meta:
         managed = False
