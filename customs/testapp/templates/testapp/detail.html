@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>数据详情</title>
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<form class="form-horizontal" role="form">
+    {% if question %}
+	<div class="form-group">
+		<label class="col-sm-2 control-label">海关编号</label>
+		<div class="col-sm-4">
+			<p class="form-control-static">{{ question.customs_id }}</p>
+		</div>
+        <label class="col-sm-2 control-label">商品序号</label>
+        <div class="col-sm-4">
+            <p class="form-control-static">{{ question.product_id }}</p>
+        </div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">商品编号</label>
+		<div class="col-sm-4">
+			<p class="form-control-static">{{ question.product_number }}</p>
+		</div>
+        <label class="col-sm-2 control-label">商品名称</label>
+        <div class="col-sm-4">
+            <p class="form-control-static">{{ question.product_name }}</p>
+        </div>
+	</div>
+
+                 <div class="form-group">
+                    <label for="schoolName" class="col-sm-2 control-label">商品规格型号</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="schoolName" name="schoolName" placeholder= {{ question.guige }} readonly="true">
+                    </div>
+                </div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">第一法定计量单位</label>
+		<div class="col-sm-4">
+			<p class="form-control-static">{{ question.diyi_jiliang }}</p>
+		</div>
+        <label class="col-sm-2 control-label">第一法定数量</label>
+        <div class="col-sm-4">
+            <p class="form-control-static">{{ question.diyi_shuliang }}</p>
+        </div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-2 control-label">申报日期</label>
+		<div class="col-sm-2">
+			<p class="form-control-static">{{ question.shenbao_date }}</p>
+		</div>
+        <label class="col-sm-2 control-label">申报单位代码</label>
+        <div class="col-sm-2">
+            <p class="form-control-static">{{ question.shenbao_code }}</p>
+        </div>
+        <label class="col-sm-2 control-label">申报单位名称</label>
+        <div class="col-sm-2">
+            <p class="form-control-static">{{ question.shenbao_name }}</p>
+        </div>
+	</div>
+
+    	<div class="form-group">
+		<label class="col-sm-2 control-label">每项商品需要监管证件</label>
+		<div class="col-sm-4">
+			<p class="form-control-static">email@example.com</p>
+		</div>
+        <label class="col-sm-2 control-label">监管方式</label>
+        <div class="col-sm-4">
+            <p class="form-control-static">唉</p>
+        </div>
+	</div>
+
+    <div class="form-group">
+		<label class="col-sm-2 control-label">货主单位名称</label>
+		<div class="col-sm-4">
+			<p class="form-control-static">{{ question.huozhu_name }}</p>
+		</div>
+        <label class="col-sm-2 control-label">货主单位代码</label>
+        <div class="col-sm-4">
+            <p class="form-control-static">{{ question.huozhu_code }}</p>
+        </div>
+	</div>
+
+    <div class="form-group">
+                    <label for="userId" class="col-sm-2 control-label">应征从价关税率</label>
+                    <div class="col-sm-2">
+                        <input type="text"  class="form-control"  name="userId" placeholder={{ question.ying_jia_guan }} readonly="true">
+                    </div>
+                    <label for="age" class="col-sm-2 control-label">实征从价关税率</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control"  name="age" placeholder="{{ question.shi_jia_guan }}" readonly="true">
+                    </div>
+    </div>
+
+        <div class="form-group">
+                    <label for="userId" class="col-sm-2 control-label">应征从量关税税率</label>
+                    <div class="col-sm-2">
+                        <input type="text"  class="form-control"  name="userId" placeholder={{ question.ying_liang_guan }} readonly="true">
+                    </div>
+                    <label for="age" class="col-sm-2 control-label">实征从量关税税率</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control"  name="age" placeholder={{ question.shi_liang_guan }} readonly="true">
+                    </div>
+    </div>
+
+        <div class="form-group">
+                    <label for="userId" class="col-sm-2 control-label">应征从价增值税率</label>
+                    <div class="col-sm-2">
+                        <input type="text"  class="form-control" name="userId" placeholder={{ question.ying_jia_zeng }} readonly="true">
+                    </div>
+                    <label for="age" class="col-sm-2 control-label">实征从价增值税率</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" name="age" placeholder={{ question.shi_jia_zeng }} readonly="true">
+                    </div>
+    </div>
+
+        <div class="form-group">
+                    <label for="userId" class="col-sm-2 control-label">应征从价消费税率</label>
+                    <div class="col-sm-2">
+                        <input type="text"  class="form-control" name="userId" placeholder={{ question.ying_jia_xiao }} readonly="true">
+                    </div>
+                    <label for="age" class="col-sm-2 control-label">实征从价消费税率</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" name="age" placeholder={{ question.shi_jia_xiao }} readonly="true">
+                    </div>
+    </div>
+
+        <div class="form-group">
+                    <label for="userId" class="col-sm-2 control-label">应征从量消费税税率</label>
+                    <div class="col-sm-2">
+                        <input type="text"  class="form-control" name="userId" placeholder={{ question.ying_liang_xiao }} readonly="true">
+                    </div>
+                    <label for="age" class="col-sm-2 control-label">实征从量消费税税率</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" name="age" placeholder={{ question.shi_liang_xiao }} readonly="true">
+                    </div>
+    </div>
+
+        <div class="form-group">
+                    <label for="userId" class="col-sm-2 control-label">应征从价反倾销税税率</label>
+                    <div class="col-sm-2">
+                        <input type="text"  class="form-control" id="userId" name="userId" placeholder={{ question.ying_jia_fan }} readonly="true">
+                    </div>
+                    <label for="age" class="col-sm-2 control-label">实征从价反倾销税税率</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" id="age" name="age" placeholder={{ question.shi_jia_fan }} readonly="true">
+                    </div>
+    </div>
+
+
+
+
+	<div class="form-group">
+		<label class="col-sm-2 control-label">产销国</label>
+		<div class="col-sm-2">
+			<p class="form-control-static">{{ question.chanxiaoguo }}</p>
+		</div>
+        <label class="col-sm-2 control-label">关税完税价</label>
+		<div class="col-sm-2">
+			<input type="password" class="form-control"
+				   placeholder={{ question.shui_jia }} >
+		</div>
+	</div>
+
+{% else %}
+    <p>没有这项数据</p>
+{% endif %}
+</form>
+</body>
+</html>
