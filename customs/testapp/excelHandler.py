@@ -38,6 +38,9 @@ class ExcelRead(object):
             print("sql---{}".format(sql))
             self.insert(conn, sql)
 
+    def handle_csv_file(self, file_tag):
+        return "等会阿鹏在这个方法里写"
+
     def insert(self, conn, sql):  # 数据库查询类，sql为查询语句
         cursor = conn.cursor()
         cursor.execute(sql)
