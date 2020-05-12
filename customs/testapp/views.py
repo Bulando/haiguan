@@ -1,5 +1,6 @@
-from django.shortcuts import render
+import csv
 
+from django.shortcuts import render
 # Create your views here.
 from .models import Datax, Dataxx
 from django.http import HttpResponse, HttpResponseRedirect
@@ -70,6 +71,21 @@ def upload(request):
             # print(myform)
             f = request.FILES['my_file']
             print(f)
+
+            # csv格式读取数据，f为上传的文件
+            with open(f, newline='') as rfile:
+                reader = csv.reader(rfile, dialect='excel')
+                # 读取第二行数据（表头为第一行）
+                header_row = next(reader)
+            # 写入数据到数据库中
+            with open('aaa', 'w') as wfile:
+                write = csv.writer(wfile)
+                for row in header_row:
+                    write.writerow(row)
+            erli = []
+            write.list_data(erli)
+            write.handle_uploaded_file(erli)
+            print("导入data0表成功！！！")
 
             # 开始解析上传的excel表格
             wb = xlrd.open_workbook(filename=None, file_contents=f.read())  # 关键点在于这里
