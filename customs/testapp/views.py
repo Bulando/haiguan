@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+# 阿鹏
 # Create your views here.
 from .models import Datax, Dataxx
 from django.http import HttpResponse, HttpResponseRedirect
