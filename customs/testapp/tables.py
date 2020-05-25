@@ -60,5 +60,5 @@ class DataxTable(tables.Table):
     class Meta:
         attrs = {"id": "dazi"}
         model = Datax
-        template_name = "django_tables2/semantic.html"
+        template_name = "django_tables2/bootstrap4.html"
         fields = ("customs_id", "product_number", "product_id", "product_name", "tag_ins", "tag", "chakan")
