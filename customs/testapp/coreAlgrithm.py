@@ -21,7 +21,7 @@ class coreTax:
 
     @staticmethod
     def handle_elements_list(ele1, ele2, filter_ele_list):
-        coding = Data2.objects.all()
+        coding = Data2.objects.all()[:10000]
         print('coding = {}'.format(len(coding)))
         # new_coding = list()
         for date in coding:
@@ -147,7 +147,6 @@ class coreTax:
                             tag = 2 if (float(tt) > np.mean(numMaxLi)) else 3
                             product_tags_nums[label][tt] = self.tax_level(product_tags_nums[label][tt], label_tagsNums,
                                                                           0, tag)
-
             elif len(tags) == 2:
                 numMax = max(tags.values())
                 label_tagsNums = 0
@@ -165,8 +164,8 @@ class coreTax:
             else:
                 for t in tags.keys():
                     product_tags_nums[label][t] = [HighestLevel]
-        # print("一一一一一{}".format(product_tags_nums))
         return product_tags_nums
+
 
     def tax_algorithm(self):
         filter_ele_list = []
@@ -191,4 +190,5 @@ class coreTax:
                 v.tag = product_tags_nums[la][ta][0]
                 v.tag_ins = product_tags_nums[la][ta][1]
                 alas.append(v)
+
         return alas

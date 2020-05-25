@@ -46,6 +46,7 @@ class DataxListView(SingleTableView):
     model = Datax
     table_class = DataxTable
     table_data = z
+    # table_class.order_by = "product_id"
     template_name = 'testapp/test.html'
 
 
@@ -58,85 +59,39 @@ def detail(request, year):
 
 
 def upload(request):
-    '''
+    """
     :param request:
     :return: 上传文件excel表格 ,并进行解析
-    '''
+    """
     if request.method == "POST":
         print("post request")
         myform = FileUploadForm(request.POST, request.FILES)
-
         # 在这里可以添加筛选excel的机制
         if myform.is_valid():
-            # print(myform)
+            erli = []
             f = request.FILES['my_file']
-            print(f)
-
-            # csv格式读取数据，f为上传的文件
-            with open(f, newline='') as rfile:
-                reader = csv.reader(rfile, dialect='excel')
-                # 读取第二行数据（表头为第一行）
-                header_row = next(reader)
-            # 写入数据到数据库中
-            with open('aaa', 'w') as wfile:
-                write = csv.writer(wfile)
-                for row in header_row:
-                    write.writerow(row)
-            erli = []
-            write.list_data(erli)
-            write.handle_uploaded_file(erli)
+            path = f.temporary_file_path()
+            nessEle = ["海关编号", "商品序号", "商品编号", "商品名称", "规格型号"]
+            er = ExcelRead()
+            if path.endswith('.xls'):
+                wb = xlrd.open_workbook(filename=None, file_contents=f.read())  # 关键点在于这里
+                table = wb.sheets()[0]
+                er.list_data(erli, table, table.nrows)
+                er.handle_uploaded_file(erli)
+            if path.endswith('.csv'):
+                # csv格式读取数据，f为上传的文件
+                with open(path, newline='') as rfile:
+                    reader = csv.reader(rfile, dialect='excel')
+                    # 读取第二行数据（表头为第一行）
+                    header_row = next(reader)
+                    if set(header_row) >= set(nessEle):
+                        return
+                    for line in reader:
+                        erli.append(line)
+                    print("erli==={}".format(erli[0]))
+                    # er.handle_uploaded_file(erli)
             print("导入data0表成功！！！")
-
-            # 开始解析上传的excel表格
-            wb = xlrd.open_workbook(filename=None, file_contents=f.read())  # 关键点在于这里
-            table = wb.sheets()[0]
-            print("tableee{}".format(table))
-            nrows = table.nrows  # 行数
-            ncole = table.ncols  # 列数
-            print("row :%s, cole: %s" % (nrows, ncole))
-            er = ExcelRead(table)
-            erli = []
-            er.list_data(erli)
-            er.handle_uploaded_file(erli)
-            print("导入data0表成功！！！")
-            # for i in range(1, nrows):
-            #     rowValues = table.row_values(i)  # 一行的数据
-            #
-            #     print(type(rowValues[10]))
-            #     R_projectname = rowValues[1]
-            #
-            #     print('rowValues-->{}'.format(R_projectname))
-            #
-            #     pf = PhoneMsg.objects.filter(M_name=R_projectname)
-            #     # pf = PhoneMsg.objects.all()
-            #     if not pf.exists():  # 空值
-            #         return render(request, 'rc_test/upFileFail.html',
-            #                       context={'error': u'R_projectname 不存在,联系管理员进行添加!'})
-            #
-            #     print(pf)
-            #
-            #     pm = PhoneMsg.objects.get(M_name=R_projectname)
-            #     pm.save()
-            #     re = Result()  # 实例化result表
-            #     re.R_projectname = R_projectname
-            #     re.R_name = rowValues[2]
-            #     re.R_version = rowValues[3]
-            #     re.R_context = rowValues[4]
-            #     re.R_result = rowValues[5]
-            #     re.R_note = rowValues[6]
-            #     re.R_ower = rowValues[7]
-            #     re.R_kexuan = rowValues[8]
-            #     re.R_inning = rowValues[9]
-            #     re.R_createtime = datetime(*xldate_as_tuple(rowValues[10], 0))
-            #     print(datetime(*xldate_as_tuple(rowValues[10], 0)))
-            #     re.save()
-            #     pm.result.add(re)
-            #
-            # handle_upload_file(f, str(f))  # 上传文件处理
-
         return render(request, "testapp/fileup.html")
-
-
     else:
         myform = FileUploadForm()
     return render(request, 'testapp/fileup.html', context={'form': myform, 'what': "文件传输"})

@@ -2,6 +2,7 @@ import django_tables2 as tables
 from .models import Datax, Dataxx
 from django_tables2.utils import A
 from testapp.coreAlgrithm import coreTax
+from django.db.models.functions import Length
 
 HighestLevel = 'f'
 IVLevel = 'e'
@@ -35,8 +36,14 @@ class DataxTable(tables.Table):
     # product_name = tables.LinkColumn('testapp:datax_chakan', args=[A('pk')], verbose_name="查看")
     chakan = tables.TemplateColumn('<a href="{{record.id}}">查看</a>', verbose_name="详情")
 
+    # product_id = tables.Column(order_by="product_id")
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+    # def order_product_id(self, queryset, is_descending):
+    #     queryset = queryset.annotate(amount="product_id").order_by(("-" if is_descending else "") + "amount")
+    #     return (queryset, True)
 
     def render_tag(self, value):
         if value == LowestLevel:
@@ -51,6 +58,7 @@ class DataxTable(tables.Table):
             return "5级"
 
     class Meta:
+        attrs = {"id": "dazi"}
         model = Datax
-        template_name = "django_tables2/bootstrap.html"
+        template_name = "django_tables2/semantic.html"
         fields = ("customs_id", "product_number", "product_id", "product_name", "tag_ins", "tag", "chakan")

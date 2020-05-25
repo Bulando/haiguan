@@ -6,17 +6,18 @@ from testapp.Connect_database import Conn
 
 
 class ExcelRead(object):
-    def __init__(self, table):
-        self.table = table
-        self.columns = self.table.ncols
-        self.rows = self.table.nrows  # 获取总行数
+    def __init__(self):
+        # self.table = table
+        # self.columns = self.table.ncols
+        # self.rows = self.table.nrows  # 获取总行数
+        pass
 
-    def list_data(self, li):
+    def list_data(self, li, table, rows):
         if self.rows <= 1:
             print(u"excel行数小于等于1")
         else:
-            for i in range(1, self.rows):
-                values = self.table.row_values(i)
+            for i in range(1, rows):
+                values = table.row_values(i)
                 li.append(values)
 
             return li
